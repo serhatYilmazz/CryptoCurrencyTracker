@@ -7,13 +7,7 @@
         <th>Change(24h)</th>
         <th>Operation</th>
       </tr>
-      <tr
-        *ngFor="let coin of coins"
-        app-coin
-        [coin]="coin"
-        [ngClass]="{ holded: holdedCoins.includes(coin) }"
-        [isHolded]="holdedCoins.includes(coin)"
-      ></tr>
+      <tr *ngFor="let coin of coins" app-holded-coin [coin]="coin"></tr>
     </table>
   </div>
 </div>

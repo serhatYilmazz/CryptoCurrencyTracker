@@ -19,20 +19,7 @@
   </span>
 </td>
 <td>
-  <button
-    *ngIf="!isHolded"
-    class="btn btn-default"
-    type="button"
-    (click)="holdCoin()"
-  >
-    Hold
-  </button>
-  <button
-    *ngIf="isHolded"
-    class="btn btn-default"
-    type="button"
-    (click)="unHoldCoin()"
-  >
+  <button class="btn btn-default" type="button" (click)="unHoldCoin()">
     Holded
   </button>
 </td>

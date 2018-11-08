@@ -1,17 +1,18 @@
-import { Injectable, OnInit } from "../../../node_modules/@angular/core";
-import { Coin } from "../shared/coin";
-import { CoinApiService } from "./coin-api.service";
-import { Subject } from "../../../node_modules/rxjs";
+import { Injectable, OnInit } from "@angular/core";
+import { Coin } from "./coin";
+import { CoinApiService } from "../coins/coin-api.service";
+import { Subject } from "rxjs";
 
 @Injectable()
 export class CoinService implements OnInit {
-  holdedCoinsChanged = new Subject<String>();
+  holdedCoinsChanged = new Subject<Coin[]>();
 
   coinsChanged = new Subject<Coin[]>();
 
+  // is GET Requested data change
   isChanged = ["ds", "dsa"];
 
-  private holdedCoins = [];
+  holdedCoins: Coin[] = [];
   coins: Coin[] = [];
 
   ngOnInit() {}
@@ -22,6 +23,23 @@ export class CoinService implements OnInit {
     return this.holdedCoins.slice();
   }
 
+  holdCoin(coin: Coin) {
+    this.holdedCoins.push(coin);
+    this.holdedCoinsChanged.next(this.holdedCoins);
+  }
+
+  unHoldCoin(coin: Coin) {
+    let index;
+    // Finding index of unholded coin
+    this.holdedCoins.forEach(data => {
+      if (data.rank === coin.rank) {
+        index = this.holdedCoins.indexOf(data);
+      }
+    });
+    this.holdedCoins.splice(index, 1);
+    this.holdedCoinsChanged.next(this.holdedCoins);
+  }
+
   getCoins() {
     return this.coins;
   }
@@ -29,10 +47,10 @@ export class CoinService implements OnInit {
   updateCoins() {
     this.coinApiService.getCoins().subscribe(data => {
       let changed = this.notifyChanges(data);
-      console.log(data.data[1027].quotes.USD.percent_change_24h < 0);
 
       if (changed) {
         this.coins = [];
+        let tempIndex = -1;
         for (let coin of Object.keys(data.data)) {
           this.coins.push(
             new Coin(
@@ -48,12 +66,14 @@ export class CoinService implements OnInit {
             )
           );
         }
-        this.coins.sort((a, b) =>
-          a.rank < b.rank ? -1 : a.rank > b.rank ? 1 : 0
-        );
-        this.coinsChanged.next(this.coins);
+        this.sort();
       }
     });
+  }
+
+  sort() {
+    this.coins.sort((a, b) => (a.rank < b.rank ? -1 : a.rank > b.rank ? 1 : 0));
+    this.coinsChanged.next(this.coins);
   }
 
   private notifyChanges(data) {

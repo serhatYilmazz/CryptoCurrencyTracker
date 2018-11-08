@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Coin } from "../shared/coin";
 import { CoinApiService } from "./coin-api.service";
-import { Subscription } from "../../../node_modules/rxjs";
-import { CoinService } from "./coin.service";
+import { Subscription } from "rxjs";
+import { CoinService } from "../shared/coin.service";
 
 @Component({
   selector: "app-coins",
@@ -12,32 +12,25 @@ import { CoinService } from "./coin.service";
 export class CoinsComponent implements OnInit, OnDestroy {
   coins: Coin[] = [];
 
-  holdedCoins: String[] = [];
-
   coinsSubscription: Subscription;
+  holdedCoinsSubscription: Subscription;
+  holdedCoins: Coin[] = [];
 
   counter = 0;
   constructor(private coinService: CoinService) {}
 
   ngOnInit() {
-    this.coinService.holdedCoinsChanged.subscribe(coinRank => {
-      const index = this.holdedCoins.indexOf(coinRank, 0);
-      if (index > -1) {
-        this.holdedCoins.splice(index, 1);
-      } else {
-        this.holdedCoins.push(coinRank);
+    this.holdedCoins = this.coinService.holdedCoins;
+    this.holdedCoinsSubscription = this.coinService.holdedCoinsChanged.subscribe(
+      data => {
+        this.holdedCoins = data;
       }
-    });
+    );
 
-    this.coinService.updateCoins();
+    this.coins = this.coinService.getCoins();
     this.coinsSubscription = this.coinService.coinsChanged.subscribe(
       coins => (this.coins = coins)
     );
-
-    setInterval(() => {
-      this.coinService.updateCoins();
-      console.log(this.counter++);
-    }, 15000);
   }
 
   ngOnDestroy() {

@@ -1,6 +1,6 @@
 export class Coin {
   constructor(
-    private id,
+    public id,
     private name,
     private currentValue,
     public change1h: Number,

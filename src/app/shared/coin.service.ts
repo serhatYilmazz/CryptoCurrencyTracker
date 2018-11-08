@@ -78,12 +78,12 @@ export class CoinService implements OnInit {
   updateHoldedCoins() {
     let tempRanks = [];
     for (let i of this.holdedCoins) {
-      tempRanks.push(i.rank);
+      tempRanks.push(i.id);
     }
     this.holdedCoins = [];
 
     this.coins.forEach(coin => {
-      if (tempRanks.includes(coin.rank)) {
+      if (tempRanks.includes(coin.id)) {
         this.holdedCoins.push(coin);
       }
     });

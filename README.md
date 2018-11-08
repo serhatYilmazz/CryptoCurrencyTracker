@@ -1,3 +1,5 @@
+![Application View](./src/assets/img/app.png)
+
 # BlockChainNotification
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.4.

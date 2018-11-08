@@ -11,7 +11,7 @@ import { Subscription } from "../../../node_modules/rxjs";
 export class HoldedCoinsComponent implements OnInit, OnDestroy {
   coins: Coin[] = [];
   holdedCoinsSubscription: Subscription;
-
+  propNameIncrease: boolean = true;
   constructor(private coinService: CoinService) {}
 
   ngOnInit() {
@@ -21,6 +21,15 @@ export class HoldedCoinsComponent implements OnInit, OnDestroy {
         this.coins = data;
       }
     );
+  }
+
+  sortCoins(propName: string) {
+    this.propNameIncrease = !this.propNameIncrease;
+    let propToSort = {
+      sortype: propName,
+      inc: this.propNameIncrease
+    };
+    this.coinService.assignSortType(propToSort);
   }
 
   ngOnDestroy() {

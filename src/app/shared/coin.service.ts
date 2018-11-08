@@ -15,6 +15,8 @@ export class CoinService implements OnInit {
   holdedCoins: Coin[] = [];
   coins: Coin[] = [];
 
+  sortType: { sortype: string; inc: boolean } = { sortype: "rank", inc: false };
+
   ngOnInit() {}
 
   constructor(private coinApiService: CoinApiService) {}
@@ -44,6 +46,15 @@ export class CoinService implements OnInit {
     return this.coins;
   }
 
+  assignSortType(propName: { sortype: string; inc: boolean }) {
+    this.sortType = propName;
+    if (propName.inc) {
+      this.sortDec(propName.sortype);
+    } else {
+      this.sortInc(propName.sortype);
+    }
+  }
+
   updateCoins() {
     this.coinApiService.getCoins().subscribe(data => {
       let changed = this.notifyChanges(data);
@@ -64,13 +75,23 @@ export class CoinService implements OnInit {
           );
           this.coins.push(newCoin);
         }
-        this.sort();
+        this.sortInc(this.sortType.sortype);
       }
     });
   }
 
-  sort() {
-    this.coins.sort((a, b) => (a.rank < b.rank ? -1 : a.rank > b.rank ? 1 : 0));
+  sortInc(propName) {
+    this.coins.sort((a, b) =>
+      a[propName] < b[propName] ? -1 : a[propName] > b[propName] ? 1 : 0
+    );
+    this.updateHoldedCoins();
+    this.coinsChanged.next(this.coins);
+  }
+
+  sortDec(propName) {
+    this.coins.sort((a, b) =>
+      a[propName] < b[propName] ? 1 : a[propName] > b[propName] ? -1 : 0
+    );
     this.updateHoldedCoins();
     this.coinsChanged.next(this.coins);
   }

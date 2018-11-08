@@ -15,7 +15,6 @@ export class HoldedCoinsComponent implements OnInit, OnDestroy {
   constructor(private coinService: CoinService) {}
 
   ngOnInit() {
-    console.log("Holdedds");
     this.coins = this.coinService.holdedCoins;
     this.holdedCoinsSubscription = this.coinService.holdedCoinsChanged.subscribe(
       data => {

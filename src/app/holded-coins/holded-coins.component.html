@@ -2,10 +2,10 @@
   <div class="col-xs-12">
     <table class="table table-hover ">
       <tr>
-        <th><a (click)="sortCoins('rank')">Rank</a></th>
-        <th><a (click)="sortCoins('name')">Coin</a></th>
-        <th><a (click)="sortCoins('currentValue')">Price</a></th>
-        <th><a (click)="sortCoins('change24h')">Change(24h)</a></th>
+        <th><a app-sort [propName]="'rank'">Rank</a></th>
+        <th><a app-sort [propName]="'name'">Coin</a></th>
+        <th><a app-sort [propName]="'currentValue'">Price</a></th>
+        <th><a app-sort [propName]="'change24h'">Change(24h)</a></th>
         <th>Operation</th>
       </tr>
       <tr *ngFor="let coin of coins" app-holded-coin [coin]="coin"></tr>

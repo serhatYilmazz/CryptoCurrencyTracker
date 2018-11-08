@@ -10,7 +10,8 @@ import { CoinService } from "./shared/coin.service";
 import { HeaderComponent } from "./header/header.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { HoldedCoinsComponent } from "./holded-coins/holded-coins.component";
-import { HoldedCoinComponent } from './holded-coins/holded-coin/holded-coin.component';
+import { HoldedCoinComponent } from "./holded-coins/holded-coin/holded-coin.component";
+import { SortDirective } from "./shared/sort.directive";
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { HoldedCoinComponent } from './holded-coins/holded-coin/holded-coin.comp
     CoinComponent,
     HeaderComponent,
     HoldedCoinsComponent,
-    HoldedCoinComponent
+    HoldedCoinComponent,
+    SortDirective
   ],
   imports: [BrowserModule, HttpModule, AppRoutingModule],
   providers: [CoinApiService, CoinService],

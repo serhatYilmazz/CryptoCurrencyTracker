@@ -19,7 +19,6 @@ export class CoinsComponent implements OnInit, OnDestroy {
 
   counter = 0;
 
-  propNameIncrease: boolean = true;
   constructor(private coinService: CoinService) {}
 
   ngOnInit() {
@@ -34,15 +33,6 @@ export class CoinsComponent implements OnInit, OnDestroy {
     this.coinsSubscription = this.coinService.coinsChanged.subscribe(coins => {
       this.coins = coins;
     });
-  }
-
-  sortCoins(propName: string) {
-    this.propNameIncrease = !this.propNameIncrease;
-    let propToSort = {
-      sortype: propName,
-      inc: this.propNameIncrease
-    };
-    this.coinService.assignSortType(propToSort);
   }
 
   ngOnDestroy() {

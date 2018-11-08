@@ -19,8 +19,6 @@ export class HoldedCoinsComponent implements OnInit, OnDestroy {
     this.coins = this.coinService.holdedCoins;
     this.holdedCoinsSubscription = this.coinService.holdedCoinsChanged.subscribe(
       data => {
-        console.log("Holded");
-
         this.coins = data;
       }
     );

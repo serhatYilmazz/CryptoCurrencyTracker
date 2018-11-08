@@ -50,21 +50,19 @@ export class CoinService implements OnInit {
 
       if (changed) {
         this.coins = [];
-        let tempIndex = -1;
         for (let coin of Object.keys(data.data)) {
-          this.coins.push(
-            new Coin(
-              data.data[coin].id,
-              data.data[coin].name,
-              data.data[coin].quotes.USD.price,
-              data.data[coin].quotes.USD.percent_change_1h,
-              data.data[coin].quotes.USD.percent_change_24h,
-              "https://s2.coinmarketcap.com/static/img/coins/16x16/" +
-                data.data[coin].id +
-                ".png",
-              data.data[coin].rank
-            )
+          let newCoin = new Coin(
+            data.data[coin].id,
+            data.data[coin].name,
+            data.data[coin].quotes.USD.price,
+            data.data[coin].quotes.USD.percent_change_1h,
+            data.data[coin].quotes.USD.percent_change_24h,
+            "https://s2.coinmarketcap.com/static/img/coins/16x16/" +
+              data.data[coin].id +
+              ".png",
+            data.data[coin].rank
           );
+          this.coins.push(newCoin);
         }
         this.sort();
       }
@@ -73,7 +71,24 @@ export class CoinService implements OnInit {
 
   sort() {
     this.coins.sort((a, b) => (a.rank < b.rank ? -1 : a.rank > b.rank ? 1 : 0));
+    this.updateHoldedCoins();
     this.coinsChanged.next(this.coins);
+  }
+
+  updateHoldedCoins() {
+    let tempRanks = [];
+    for (let i of this.holdedCoins) {
+      tempRanks.push(i.rank);
+    }
+    this.holdedCoins = [];
+
+    this.coins.forEach(coin => {
+      if (tempRanks.includes(coin.rank)) {
+        this.holdedCoins.push(coin);
+      }
+    });
+
+    this.holdedCoinsChanged.next(this.holdedCoins);
   }
 
   private notifyChanges(data) {

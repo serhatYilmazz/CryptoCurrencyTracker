@@ -1,0 +1,25 @@
+<td><img src="{{ coin.imagePath }}" /> {{ coin.name }}</td>
+<td>{{ coin.currentValue }}</td>
+<td>
+  <span
+    [ngClass]="{
+      positive: isPositiveIncrease24h(),
+      negative: !isPositiveIncrease24h()
+    }"
+  >
+    <b> {{ coin.change24h }} </b>
+  </span>
+  <span
+    [ngClass]="{
+      positive: isPositiveIncrease1h(),
+      negative: !isPositiveIncrease1h()
+    }"
+  >
+    <i> ({{ coin.change1h }})</i>
+  </span>
+</td>
+<td>
+  <button class="btn btn-default" type="button" (click)="holdCoin()">
+    {{ isHolded ? "Holded" : "Hold" }}
+  </button>
+</td>

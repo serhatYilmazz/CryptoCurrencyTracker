@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col-xs-12">
+    <table class="table table-hover ">
+      <tr>
+        <th>Coin</th>
+        <th>Price</th>
+        <th>Change(24h)</th>
+      </tr>
+      <tr
+        *ngFor="let coin of coins"
+        app-coin
+        [coin]="coin"
+        [ngClass]="{ holded: holdedCoins.includes(coin.rank) }"
+      ></tr>
+    </table>
+  </div>
+</div>
